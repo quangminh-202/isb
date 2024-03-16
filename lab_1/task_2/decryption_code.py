@@ -68,7 +68,7 @@ def decryption(input_file_path: str, output_file_path: str, key_path: str) -> No
         print(f"An error occurred: {str(e)}")
 
 if __name__ == "__main__":
-    #data = frequency_analysis(r"C:\Users\DELL\PycharmProjects\isb\lab_1\task_2\cod2.txt")
-    #write_to_file(r"C:\Users\DELL\PycharmProjects\isb\lab_1\task_2\frequency_text.txt", data)
-    #key_decryption("frequency_text.txt", "standard_frequency.txt", "decryption_key.txt")
+    data = frequency_analysis(r"C:\Users\DELL\PycharmProjects\isb\lab_1\task_2\cod2.txt")
+    write_to_file(r"C:\Users\DELL\PycharmProjects\isb\lab_1\task_2\frequency_text.txt", data)
+    key_decryption("frequency_text.txt", "standard_frequency.txt", "decryption_key.txt")
     decryption("cod2.txt", "decrypted_text.txt", "decryption_key.json")
