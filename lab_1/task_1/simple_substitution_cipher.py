@@ -47,27 +47,38 @@ def decrypt(text, key):
         decrypted_text += reverse_key.get(char, char)
     return decrypted_text
 
-# Генерация ключа шифрования на русском языке
-key = generate_key()
-try:
-    with open('original_text.txt', 'r', encoding='utf-8') as file:
-        original_text = file.read()
+def generate_key_and_encrypt_and_decrypt():
+    """
+    Generate encryption key, encrypt and decrypt a piece of text, and save the results.
 
-    # Шифрование текста
-    encrypted_text = encrypt(original_text, key)
-    decrypted_text = decrypt(encrypted_text, key)
+    This function performs the following steps:
+    1. Generates an encryption key.
+    2. Reads the original text from 'original_text.txt'.
+    3. Encrypts the original text using the generated key.
+    4. Decrypts the encrypted text using the same key.
+    5. Saves the encrypted text to 'encrypted_text.txt'.
+    6. Saves the decrypted text to 'decrypted_text.txt'.
+    7. Saves the encryption key to 'encryption_key.txt'.
+    """
+    key = generate_key()
+    try:
+        with open('original_text.txt', 'r', encoding='utf-8') as file:
+            original_text = file.read()
 
-    # Сохранение зашифрованного текста
-    with open('encrypted_text.txt', 'w', encoding='utf-8') as file:
-        file.write(encrypted_text)
+        encrypted_text = encrypt(original_text, key)
+        decrypted_text = decrypt(encrypted_text, key)
 
-    # Lưu đoạn văn bản đã giải mã
-    with open('decrypted_text.txt', 'w', encoding='utf-8') as file:
-        file.write(decrypted_text)
+        with open('encrypted_text.txt', 'w', encoding='utf-8') as file:
+            file.write(encrypted_text)
 
-    # Сохранение ключа шифрования
-    with open('encryption_key.txt', 'w', encoding='utf-8') as file:
-        for k, v in key.items():
-            file.write(f"{k}:{v}\n")
-except Exception as e:
-    print("An error occurred:", str(e))
+        with open('decrypted_text.txt', 'w', encoding='utf-8') as file:
+            file.write(decrypted_text)
+
+        with open('encryption_key.txt', 'w', encoding='utf-8') as file:
+            for k, v in key.items():
+                file.write(f"{k}:{v}\n")
+    except Exception as e:
+        print("An error occurred:", str(e))
+
+if __name__ == "__main__":
+    generate_key_and_encrypt_and_decrypt()
