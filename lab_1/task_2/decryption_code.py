@@ -1,5 +1,15 @@
 import json
-def frequency_analysis(file_path):
+
+def frequency_analysis(file_path: str) -> list:
+    """
+    Perform frequency analysis on the characters in a text file.
+
+    Args:
+        file_path (str): The path to the text file.
+
+    Returns:
+        list: A list of tuples containing characters and their relative frequencies, sorted in descending order of frequency.
+    """
     frequencies = {}
     total_chars = 0
     try:
@@ -21,8 +31,14 @@ def frequency_analysis(file_path):
         sorted_frequencies = sorted(relative_frequencies.items(), key=lambda x: x[1], reverse=True)
         return sorted_frequencies
 
-
 def write_to_file(path: str, data: list) -> None:
+    """
+    Write frequency analysis to a file.
+
+    Args:
+        path (str): The path to the file.
+        data (list): The data to be written to the file.
+    """
     try:
         with open(path, "w") as file:
             for item in data:
@@ -31,6 +47,13 @@ def write_to_file(path: str, data: list) -> None:
         print(f"An error occurred: {str(e)}")
 
 def read_frequency_file(file_path: str) -> dict:
+    """
+    Write data to a file.
+
+    Args:
+        path (str): The path to the file.
+        data (list): The data to be written to the file.
+    """
     frequency_dict = {}
     with open(file_path, 'r', encoding='utf-8') as file:
         for line in file:
@@ -40,6 +63,14 @@ def read_frequency_file(file_path: str) -> dict:
     return frequency_dict
 
 def key_decryption(frequency_text_path: str, standard_frequency_path: str, output_file: str) -> None:
+    """
+    Generate a decryption key based on frequency analysis.
+
+    Args:
+        frequency_text_path (str): The path to the file containing frequency data of encrypted text.
+        standard_frequency_path (str): The path to the file containing standard frequency data.
+        output_file (str): The path to save the generated decryption key.
+    """
     try:
         frequency_text = read_frequency_file(frequency_text_path)
         standard_frequency = read_frequency_file(standard_frequency_path)
@@ -54,6 +85,14 @@ def key_decryption(frequency_text_path: str, standard_frequency_path: str, outpu
         print(f"An error occurred {str(e)}")
 
 def decryption(input_file_path: str, output_file_path: str, key_path: str) -> None:
+    """
+    Decrypt an encrypted text using a decryption key.
+
+    Args:
+        input_file_path (str): The path to the encrypted text file.
+        output_file_path (str): The path to save the decrypted text.
+        key_path (str): The path to the decryption key file.
+    """
     try:
         with open(key_path, "r", encoding="utf-8") as json_file:
             decryption_key = json.load(json_file)
@@ -68,7 +107,9 @@ def decryption(input_file_path: str, output_file_path: str, key_path: str) -> No
         print(f"An error occurred: {str(e)}")
 
 if __name__ == "__main__":
-    data = frequency_analysis(r"C:\Users\DELL\PycharmProjects\isb\lab_1\task_2\cod2.txt")
-    write_to_file(r"C:\Users\DELL\PycharmProjects\isb\lab_1\task_2\frequency_text.txt", data)
-    key_decryption("frequency_text.txt", "standard_frequency.txt", "decryption_key.txt")
-    decryption("cod2.txt", "decrypted_text.txt", "decryption_key.json")
+    with open('settings.json', 'r') as settings_file:
+        settings = json.load(settings_file)
+    data = frequency_analysis(settings["input_file_path"])
+    write_to_file(settings["frequency_text_path"], data)
+    key_decryption(settings["frequency_text_path"], settings["standard_frequency_path"], settings["decryption_key_path"])
+    decryption(settings["input_file_path"], settings["output_file_path"], settings["decryption_key_path"])
