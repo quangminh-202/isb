@@ -1,6 +1,9 @@
 import random
+import json
+
 
 ALPHABET = "АБВГДЕЖЗИЙКЛМОПРСТУФХЦЧШЩЪЫЬЭЮЯ"
+
 
 def generate_key():
     """
@@ -13,6 +16,7 @@ def generate_key():
     shuffled_alphabet = alphabet[:]
     random.shuffle(shuffled_alphabet)
     return dict(zip(alphabet, shuffled_alphabet))
+
 
 def encrypt(text, key):
     """
@@ -30,6 +34,7 @@ def encrypt(text, key):
         encrypted_text += key.get(char, char)
     return encrypted_text
 
+
 def decrypt(text, key):
     """
     Decrypt a piece of text using a generated key.
@@ -46,6 +51,7 @@ def decrypt(text, key):
     for char in text:
         decrypted_text += reverse_key.get(char, char)
     return decrypted_text
+
 
 def generate_key_and_encrypt_and_decrypt():
     """
@@ -74,11 +80,11 @@ def generate_key_and_encrypt_and_decrypt():
         with open('decrypted_text.txt', 'w', encoding='utf-8') as file:
             file.write(decrypted_text)
 
-        with open('encryption_key.txt', 'w', encoding='utf-8') as file:
-            for k, v in key.items():
-                file.write(f"{k}:{v}\n")
+        with open('encryption_key.json', 'w', encoding='utf-8') as file:
+            json.dump(key, file, ensure_ascii=False, indent=4)
     except Exception as e:
         print("An error occurred:", str(e))
+
 
 if __name__ == "__main__":
     generate_key_and_encrypt_and_decrypt()

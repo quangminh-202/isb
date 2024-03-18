@@ -1,5 +1,6 @@
 import json
 
+
 def frequency_analysis(file_path: str) -> list:
     """
     Perform frequency analysis on the characters in a text file.
@@ -22,14 +23,14 @@ def frequency_analysis(file_path: str) -> list:
                             frequencies[char] += 1
                         else:
                             frequencies[char] = 1
+        relative_frequencies = {char: freq / total_chars for char, freq in frequencies.items()}
+        sorted_frequencies = sorted(relative_frequencies.items(), key=lambda x: x[1], reverse=True)
+        return sorted_frequencies
     except FileNotFoundError:
         print("File not found.")
     except Exception as e:
         print(f"An error occurred: {str(e)}")
-    else:
-        relative_frequencies = {char: freq / total_chars for char, freq in frequencies.items()}
-        sorted_frequencies = sorted(relative_frequencies.items(), key=lambda x: x[1], reverse=True)
-        return sorted_frequencies
+
 
 def write_to_file(path: str, data: list) -> None:
     """
@@ -46,6 +47,7 @@ def write_to_file(path: str, data: list) -> None:
     except Exception as e:
         print(f"An error occurred: {str(e)}")
 
+
 def read_frequency_file(file_path: str) -> dict:
     """
     Write data to a file.
@@ -61,6 +63,7 @@ def read_frequency_file(file_path: str) -> dict:
                 char, freq = line.strip().split(': ')
                 frequency_dict[char] = float(freq)
     return frequency_dict
+
 
 def key_decryption(frequency_text_path: str, standard_frequency_path: str, output_file: str) -> None:
     """
@@ -84,6 +87,7 @@ def key_decryption(frequency_text_path: str, standard_frequency_path: str, outpu
     except Exception as e:
         print(f"An error occurred {str(e)}")
 
+
 def decryption(input_file_path: str, output_file_path: str, key_path: str) -> None:
     """
     Decrypt an encrypted text using a decryption key.
@@ -105,6 +109,7 @@ def decryption(input_file_path: str, output_file_path: str, key_path: str) -> No
         print("File not found.")
     except Exception as e:
         print(f"An error occurred: {str(e)}")
+
 
 if __name__ == "__main__":
     with open('settings.json', 'r') as settings_file:
