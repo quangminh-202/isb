@@ -1,7 +1,7 @@
 import json
 
 
-def frequency_analysis(file_path: str) -> list:
+def frequency_analysis(file_path: str) -> dict:
     """
     Perform frequency analysis on the characters in a text file.
 
@@ -25,14 +25,14 @@ def frequency_analysis(file_path: str) -> list:
                             frequencies[char] = 1
         relative_frequencies = {char: freq / total_chars for char, freq in frequencies.items()}
         sorted_frequencies = sorted(relative_frequencies.items(), key=lambda x: x[1], reverse=True)
-        return sorted_frequencies
+        return dict(sorted_frequencies)
     except FileNotFoundError:
         print("File not found.")
     except Exception as e:
         print(f"An error occurred: {str(e)}")
 
 
-def write_to_file(path: str, data: list) -> None:
+def write_file(path: str, data: dict) -> None:
     """
     Write frequency analysis to a file.
 
@@ -41,14 +41,13 @@ def write_to_file(path: str, data: list) -> None:
         data (list): The data to be written to the file.
     """
     try:
-        with open(path, "w") as file:
-            for item in data:
-                file.write(f"{item[0]}: {item[1]}\n")
+        with open(path, "w", encoding="utf-8") as json_file:
+            json.dump(data, json_file, ensure_ascii=False, indent=4)
     except Exception as e:
         print(f"An error occurred: {str(e)}")
 
 
-def read_frequency_file(file_path: str) -> dict:
+def read_file(file_path: str) -> dict:
     """
     Write data to a file.
 
@@ -57,11 +56,13 @@ def read_frequency_file(file_path: str) -> dict:
         data (list): The data to be written to the file.
     """
     frequency_dict = {}
-    with open(file_path, 'r', encoding='utf-8') as file:
-        for line in file:
-            if ': ' in line:
-                char, freq = line.strip().split(': ')
-                frequency_dict[char] = float(freq)
+    try:
+        with open(file_path, 'r', encoding='utf-8') as file:
+            frequency_dict = json.load(file)
+    except FileNotFoundError:
+        print("File not found.")
+    except Exception as e:
+        print(f"An error occurred: {str(e)}")
     return frequency_dict
 
 
@@ -75,15 +76,14 @@ def key_decryption(frequency_text_path: str, standard_frequency_path: str, outpu
         output_file (str): The path to save the generated decryption key.
     """
     try:
-        frequency_text = read_frequency_file(frequency_text_path)
-        standard_frequency = read_frequency_file(standard_frequency_path)
+        frequency_text = read_file(frequency_text_path)
+        standard_frequency = read_file(standard_frequency_path)
         key = {}
         for char, freq_text in frequency_text.items():
             closest_char = min(standard_frequency, key=lambda x: abs(float(freq_text) - float(standard_frequency[x])))
             key[char] = closest_char
 
-        with open(output_file, 'w', encoding='utf-8') as json_file:
-            json.dump(key, json_file, ensure_ascii=False, indent=4)
+        write_file(output_file, list(key))
     except Exception as e:
         print(f"An error occurred {str(e)}")
 
@@ -115,6 +115,6 @@ if __name__ == "__main__":
     with open('settings.json', 'r') as settings_file:
         settings = json.load(settings_file)
     data = frequency_analysis(settings["input_file_path"])
-    write_to_file(settings["frequency_text_path"], data)
-    key_decryption(settings["frequency_text_path"], settings["standard_frequency_path"], settings["decryption_key_path"])
-    decryption(settings["input_file_path"], settings["output_file_path"], settings["decryption_key_path"])
+    write_file(settings["frequency_text_path"], data)
+    #key_decryption(settings["frequency_text_path"], settings["standard_frequency_path"], settings["decryption_key_path"])
+    #decryption(settings["input_file_path"], settings["output_file_path"], settings["decryption_key_path"])
