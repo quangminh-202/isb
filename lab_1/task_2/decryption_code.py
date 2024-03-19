@@ -15,14 +15,10 @@ def frequency_analysis(file_path: str) -> dict:
     total_chars = 0
     try:
         with open(file_path, "r", encoding="utf-8") as file:
-            for line in file:
-                for char in line:
-                    if char != "\n":
-                        total_chars += 1
-                        if char in frequencies:
-                            frequencies[char] += 1
-                        else:
-                            frequencies[char] = 1
+            for char in file.read():
+                if char != "\n":
+                    total_chars += 1
+                    frequencies[char] = frequencies.get(char, 0) + 1
         relative_frequencies = {char: freq / total_chars for char, freq in frequencies.items()}
         sorted_frequencies = sorted(relative_frequencies.items(), key=lambda x: x[1], reverse=True)
         return dict(sorted_frequencies)
@@ -101,7 +97,7 @@ def decryption(input_file_path: str, output_file_path: str, key_path: str) -> No
         with open(key_path, "r", encoding="utf-8") as json_file:
             decryption_key = json.load(json_file)
         with open(input_file_path, 'r', encoding='utf-8') as input_file, \
-                open(output_file_path, 'w', encoding='utf-8') as output_file:
+        open(output_file_path, 'w', encoding='utf-8') as output_file:
             for line in input_file:
                 decrypted_line = ''.join(decryption_key.get(char, char) for char in line.strip())
                 output_file.write(decrypted_line + '\n')
