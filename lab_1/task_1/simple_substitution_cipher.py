@@ -18,39 +18,26 @@ def generate_key():
     return dict(zip(alphabet, shuffled_alphabet))
 
 
-def encrypt(text, key):
+def transform_text(text, key, mode):
     """
-   Encrypt a piece of text using a generated key.
-
-   Args:
-   text (str): The text needs encryption.
-   key (dict): Encryption key, a dictionary that mapped the original characters into encrypted characters.
-
-   Returns:
-   str: The text is encrypted.
-   """
-    encrypted_text = ''
-    for char in text:
-        encrypted_text += key.get(char, char)
-    return encrypted_text
-
-
-def decrypt(text, key):
-    """
-    Decrypt a piece of text using a generated key.
+    Encrypt or decrypt a piece of text based on the mode provided.
 
     Args:
-    text (str): The text is encrypted.
-    key (dict): Encryption key, a dictionary that mapped the original characters into encrypted characters.
+    text (str): The text to be transformed.
+    key (dict): Encryption key, a dictionary that maps the original characters into encrypted characters.
+    mode (str): The mode of transformation, either 'encrypt' or 'decrypt'.
+
     Returns:
-    str: The text has been decrypted.
+    str: The transformed text.
     """
-    # Create reverse key given keyword
-    reverse_key = {v: k for k, v in key.items()}
-    decrypted_text = ''
+    transformed_text = ''
     for char in text:
-        decrypted_text += reverse_key.get(char, char)
-    return decrypted_text
+        if mode == 'encrypt':
+            transformed_text += key.get(char, char)
+        elif mode == 'decrypt':
+            reverse_key = {v: k for k, v in key.items()}
+            transformed_text += reverse_key.get(char, char)
+    return transformed_text
 
 
 def generate_key_and_encrypt_and_decrypt():
@@ -71,8 +58,8 @@ def generate_key_and_encrypt_and_decrypt():
         with open('original_text.txt', 'r', encoding='utf-8') as file:
             original_text = file.read()
 
-        encrypted_text = encrypt(original_text, key)
-        decrypted_text = decrypt(encrypted_text, key)
+        encrypted_text = transform_text(original_text, key,"encrypt")
+        decrypted_text = transform_text(encrypted_text, key, "decrypt")
 
         with open('encrypted_text.txt', 'w', encoding='utf-8') as file:
             file.write(encrypted_text)
