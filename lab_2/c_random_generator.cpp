@@ -1,6 +1,6 @@
 #include <iostream>
-#include <cstdlib>
-#include <ctime>
+#include <cstdlib> // for srand() and rand()
+#include <ctime>  //for time()
 
 #define SIZE 128
 
