@@ -1,6 +1,0 @@
-INFO:root:Result from frequency_test for C++: 0.5958830905651779
-INFO:root:Result from test_for_runs for C++: 0.5779293102278323
-INFO:root:Result from longest_run_of_ones_test C++: 0.83341394108116
-INFO:root:Result from frequency_test for Java: 0.1572992070502852
-INFO:root:Result from test_for_runs for Java: 0.5900607320214112
-INFO:root:Result from longest_run_of_ones_test for Java: 0.180221349336035
