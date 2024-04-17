@@ -19,8 +19,8 @@ def load_settings(setting_file: str) -> dict:
         with open(setting_file) as f:
             settings = json.load(f)
         logging.info('Successfully reading the settings')
-    except OSError as err:
-        logging.warning(f' Error when reading settings from a file {setting_file}\n{err}')
+    except Exception as e:
+        logging.error(f'Error reading setttings file: {e}')
     return settings
 
 
@@ -35,8 +35,8 @@ def write_symmetric_key(key: bytes, filename: str) -> None:
         with open(filename, 'wb') as f:
             f.write(key)
         logging.info(f' The symmetric key is written in the file{filename}')
-    except OSError as err:
-        logging.warning(f' Error when saving a symmetric key to a file {filename}\n{err}')
+    except Exception as e:
+        logging.error(f'Error writing symmetric key to file: {e}')
 
 
 def load_symmetric_key(filename: str) -> bytes:
@@ -51,8 +51,8 @@ def load_symmetric_key(filename: str) -> bytes:
         with open(filename, mode='rb') as f:
             content = f.read()
         logging.info(f'The symmetric key is read from the file {filename}')
-    except OSError as err:
-        logging.warning(f'Error when reading from a file {filename}\n{err}')
+    except Exception as e:
+        logging.error(f'Error reading symmetric key file: {e}')
     return content
 
 
@@ -70,17 +70,14 @@ def write_asymmetric_key(private_key, public_key, private_pem: str, public_pem: 
             public_out.write(public_key.public_bytes(encoding=serialization.Encoding.PEM,
                                                      format=serialization.PublicFormat.SubjectPublicKeyInfo))
         logging.info(f'The public key has been successfully saved to a file{public_pem}')
-    except OSError as err:
-        logging.warning(f'Error saving the public key to a file {public_pem}\n{err}')
 
-    try:
         with open(private_pem, 'wb') as private_out:
             private_out.write(private_key.private_bytes(encoding=serialization.Encoding.PEM,
                                                         format=serialization.PrivateFormat.TraditionalOpenSSL,
                                                         encryption_algorithm=serialization.NoEncryption()))
         logging.info(f'The private key has been successfully saved to a file {private_pem}')
-    except OSError as err:
-        logging.warning(f'Error saving the private key to a file {private_pem}\n{err}')
+    except Exception as e:
+        logging.error(f'Error writing asymmetric keys to files: {e}')
 
 
 def load_private_key(filename: str) -> bytes:
@@ -97,8 +94,8 @@ def load_private_key(filename: str) -> bytes:
         d_private_bytes = load_pem_private_key(private_bytes, password=None,)
         logging.info(f'The private key is read from the file {filename}')
         return d_private_bytes
-    except OSError as err:
-        logging.warning(f'Error when reading from a file{filename}\n{err}')
+    except Exception as e:
+        logging.error(f'Error reading private key file: {e}')
 
 
 def load_text(filename: str) -> bytes:
@@ -113,9 +110,9 @@ def load_text(filename: str) -> bytes:
         with open(filename, mode='rb') as f:
             text = f.read()
         logging.info(f' File {filename} readed')
-    except OSError as err:
-        logging.warning(f'Error when reading from a file{filename}\n{err}')
-    return text
+        return text
+    except Exception as e:
+        logging.error(f'Error reading text file {e}')
 
 
 def write_file(filename: str, text: bytes) -> None:
@@ -129,5 +126,5 @@ def write_file(filename: str, text: bytes) -> None:
         with open(filename, mode='wb') as f:
             f.write(text)
         logging.info(f' The text is written to a file {filename}')
-    except OSError as err:
-        logging.warning(f'Error writing to the file {filename}\n{err}')
+    except Exception as e:
+        logging.error(f'Error writing text to file: {e}')
