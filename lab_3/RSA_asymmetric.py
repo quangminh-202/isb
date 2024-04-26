@@ -11,6 +11,14 @@ class RSA:
     A class providing methods for RSA generation key, encryption and decryption.
     """
     def __init__(self, private_key_path: str, public_key_path: str) -> None:
+        """
+        Initialize a new object of the class.
+        Parameters:
+        - private_key_path (str): Path to the private key.
+        - public_key_path (str): Path to the public key.
+        Returns:
+        None
+        """
         self.private_key = private_key_path
         self.public_key = public_key_path
 
