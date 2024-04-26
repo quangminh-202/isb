@@ -8,6 +8,9 @@ class TripleDES:
     """
     A class providing methods for Triple DES generation key, encryption and decryption.
     """
+    def __init__(self, symmetric_key_path: str) -> None:
+        self.symmetric_key = symmetric_key_path
+
     def encrypt_3des(self, key: bytes, plaintext: bytes) -> bytes:
         """
          Encrypts plaintext using Triple DES algorithm.

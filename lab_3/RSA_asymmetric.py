@@ -10,12 +10,16 @@ class RSA:
     """
     A class providing methods for RSA generation key, encryption and decryption.
     """
+    def __init__(self, private_key_path: str, public_key_path: str) -> None:
+        self.private_key = private_key_path
+        self.public_key = public_key_path
+
     def generate_rsa_key(self) -> tuple:
         """
-         Generates RSA private and public key pair.
-         Returns:
+        Generates RSA private and public key pair.
+        Returns:
              tuple: A tuple containing the private key and the corresponding public key.
-         """
+        """
         keys = rsa.generate_private_key(
             public_exponent=65537,
             key_size=2048
@@ -39,7 +43,7 @@ class RSA:
         logging.info('The text is encrypted with an asymmetric encryption algorithm.')
         return encrypt_text
 
-    def decrypt_rsa(self, private_key: object, text: bytes) -> bytes:
+    def decrypt_rsa(self, private_key, text: bytes) -> bytes:
         """
         Decrypts text using RSA private key.
         Parameters:

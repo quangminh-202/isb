@@ -10,8 +10,6 @@ SETTING_FILE = 'settings.json'
 
 
 if __name__ == '__main__':
-    triple_des = TripleDES()
-    rsa = RSA()
     parser = argparse.ArgumentParser()
     parser.add_argument('-set', '--settings', default=SETTING_FILE, type=str,
                         help='Allows you to use your own json file with paths"(Enter the path to the file)')
@@ -21,6 +19,8 @@ if __name__ == '__main__':
     group.add_argument('-dec', '--decryption', action='store_true', help='Запускает режим дешифрования')
     args = parser.parse_args()
     settings = load_settings(args.settings)
+    triple_des = TripleDES(settings['symmetric_key'])
+    rsa = RSA(settings['private_key'], settings['public_key'])
     if settings:
         match True:
             case args.generation:
@@ -28,8 +28,8 @@ if __name__ == '__main__':
                 length = triple_des.ask_user_length_key()
                 sym_key = triple_des.generate_3des_key(length)
                 private_key, public_key = rsa.generate_rsa_key()
-                write_asymmetric_key(private_key, public_key, settings['private_key'], settings['public_key'])
                 cipher_sym_key = rsa.encrypt_rsa(public_key, sym_key)
+                write_asymmetric_key(private_key, public_key, settings['private_key'], settings['public_key'])
                 write_symmetric_key(cipher_sym_key, settings['symmetric_key'])
             case args.encryption:
                 logging.info('Encryption mode begins.')
