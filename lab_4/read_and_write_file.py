@@ -27,6 +27,12 @@ def read_json(setting_file: str) -> dict:
 
 
 def write_card(card: str, filename: str) -> None:
+    """
+     Write a card number to a JSON file.
+     Parameters:
+         card (str): The card number to write.
+         filename (str): The name of the file to write the card number to.
+     """
     try:
         with open(filename, "w") as f:
             json.dump({"card_number": card}, f)
@@ -34,26 +40,14 @@ def write_card(card: str, filename: str) -> None:
         logging.error(f'Error writing text a file {filename}: {e}')
 
 
-def read_file(filename: str) -> str:
-    try:
-        with open(filename, "r") as f:
-            text = f.read()
-        logging.info(f'File {filename} readed')
-    except Exception as e:
-        logging.error(f'Error reading text file {e}')
-    return text
-
-
-def write_file(text: str, filename: str) -> None:
-    try:
-        with open(filename, "w") as f:
-            f.write(text)
-        logging.info(f'The text is written to a file {filename} ')
-    except Exception as e:
-        logging.warning(f'Error writing text a file {filename}: {e}')
-
-
 def load_statistics(filename: str) -> dict:
+    """
+    Load statistics from a CSV file.
+    Parameters:
+        filename (str): The name of the CSV file containing statistics.
+    Returns:
+        dict: A dictionary containing statistics loaded from the CSV file.
+    """
     try:
         with open(filename, 'r') as f:
             reader = csv.reader(f)
@@ -69,8 +63,15 @@ def load_statistics(filename: str) -> dict:
 
 
 def write_statistics(processes: int, time: float, filename: str) -> None:
+    """
+    Write statistics to a CSV file.
+    Parameters:
+        processes (int): The number of processes.
+        time (float): The time taken for the processes.
+        filename (str): The name of the CSV file to write the statistics to.
+    """
     try:
-        with open(filename, 'w', newline='') as f:
+        with open(filename, 'a', newline='') as f:
             writer = csv.writer(f)
             writer.writerow([processes, time])
         logging.info(f"Statistics written to a file {filename}")

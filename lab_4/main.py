@@ -1,4 +1,4 @@
-from read_and_write_file import read_json, write_card, read_file,  write_file, load_statistics, write_statistics
+from read_and_write_file import read_json, write_card, load_statistics, write_statistics
 from find_card import processing_card, luna_algorithm, graphing_and_save
 import time
 import multiprocessing as mp
@@ -8,6 +8,7 @@ import argparse
 SETTINGS_FILE = 'settings.json'
 logger = logging.getLogger()
 logger.setLevel('INFO')
+
 
 if __name__ == '__main__':
     parser = argparse.ArgumentParser()
